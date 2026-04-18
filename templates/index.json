@@ -56,7 +56,7 @@
           "type": "bs1_header",
           "settings": {
             "logo": "shopify://shop_images/Group_1000007777.png",
-            "middle_text": "",
+            "middle_text": "Find the ideal gift for your loved ones.",
             "button_text": "choose gift",
             "button_link": "#"
           }
@@ -64,11 +64,13 @@
         "bs2_banner_WhK4tn": {
           "type": "bs2_banner",
           "settings": {
-            "heading": "",
-            "rich_text": "",
+            "bg_image": "shopify://shop_images/banner-bg.webp",
+            "mobile_image": "shopify://shop_images/banner-mobile.svg",
+            "heading": "The Gift Guide",
+            "rich_text": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>",
             "rich_text_m": "",
-            "button_text": "",
-            "button_link": ""
+            "button_text": "shop now",
+            "button_link": "#"
           }
         },
         "bs3_text_4QcJBJ": {
