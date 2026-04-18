@@ -48,9 +48,48 @@
         "mobile_content_alignment": "center",
         "show_text_below": false
       }
+    },
+    "custom_banner_section_BeLcfy": {
+      "type": "custom-banner-section",
+      "blocks": {
+        "bs1_header_Lne9b8": {
+          "type": "bs1_header",
+          "settings": {
+            "logo": "shopify://shop_images/Group_1000007777.png",
+            "middle_text": "",
+            "button_text": "choose gift",
+            "button_link": "#"
+          }
+        },
+        "bs2_banner_WhK4tn": {
+          "type": "bs2_banner",
+          "settings": {
+            "heading": "",
+            "rich_text": "",
+            "rich_text_m": "",
+            "button_text": "",
+            "button_link": ""
+          }
+        },
+        "bs3_text_4QcJBJ": {
+          "type": "bs3_text",
+          "settings": {
+            "bottom_text": "",
+            "bottom_text_m": ""
+          }
+        }
+      },
+      "block_order": [
+        "bs1_header_Lne9b8",
+        "bs2_banner_WhK4tn",
+        "bs3_text_4QcJBJ"
+      ],
+      "name": "Custom Banner Section",
+      "settings": {}
     }
   },
   "order": [
-    "image_banner"
+    "image_banner",
+    "custom_banner_section_BeLcfy"
   ]
 }
