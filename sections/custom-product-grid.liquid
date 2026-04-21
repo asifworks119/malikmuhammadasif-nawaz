@@ -1,0 +1,580 @@
+<div class="cp-main">
+    <div class="cp-section">
+
+        {% if section.settings.heading != blank %}
+            <h2 class="cp-heading">
+                {{ section.settings.heading }}
+            </h2>
+        {% endif %}
+
+        <div class="cp-grid">
+            {% for block in section.blocks %}
+                {% assign product = all_products[block.settings.product] %}
+                {% if product != blank and product.featured_image %}
+                    <div class="cp-image-div">
+
+                        <img
+                            class="cp-image"
+                            src="{{ product.featured_image | image_url: width: 800 }}"
+                        >
+
+                        <div class="cp-plus-svg" 
+                            style="top:{{ block.settings.plus_top }}%; left:{{ block.settings.plus_left }}%;"
+                            data-img="{{ product.featured_image |  image_url: width: 800 }}"
+                            data-title="{{ product.title | escape }}"
+                            data-price="{{ product.price | money }}"
+                            data-desc="{{ product.description |  strip_html }}"
+                            data-variant-colors="{{ product.options_with_values | where: 'name', 'Color' | first | map: 'values' | join: '|' | escape }}"
+                            data-variant-sizes="{{ product.options_with_values | where: 'name', 'Size' | first | map: 'values' | join: '|' | escape }}"
+                            data-handle="{{ product.handle }}"
+                        >
+                            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g filter="url(#filter0_d_3_2760)">
+                                <circle cx="15" cy="12" r="11" fill="#F8F8F8" fill-opacity="0.9"/>
+                                <path d="M15.3457 8.04175V16.5033" stroke="black" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+                                <path d="M11.1152 12.2725H19.5768" stroke="black" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+                                </g>
+                            </svg>                   
+                        </div>
+
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+    </div>
+</div>
+
+{% comment %} POP-UP {% endcomment %}
+ <div class="cp-popup-overlay" id="cp-popup-overlay">
+    <div class="cp-popup">
+        <button class="cp-popup-close" id="cp-popup-close">
+            <svg width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g filter="url(#filter0_d_5_3065)">
+                <circle cx="15" cy="12" r="11" fill="#F8F8F8" fill-opacity="0.9"/>
+                <path d="M12.3536 9.28107L18.3368 15.2643" stroke="black" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+                <path d="M12.3535 15.2642L18.3367 9.28095" stroke="black" stroke-width="1.5" stroke-linecap="square" stroke-linejoin="round"/>
+                </g>
+            </svg>
+
+        </button>
+
+        <div class="cp-popup-div1">
+            <img class="cp-popup-img" id="cp-popup-img">
+            <div class="cp-popup-info">
+                <h2 class="cp-popup-title" id="cp-popup-title"></h2>
+                <p class="cp-popup-price" id="cp-popup-price"></p>
+                <p class="cp-popup-desc" id="cp-popup-desc"></p>
+            </div>
+        </div>
+        {% comment %} Color-variants {% endcomment %}
+        <div class="cp-color-variants-div" id="cp-color-variants-div">
+            <p class="cp-variant-name">Color</p>
+        </div>
+        {% comment %} Size-variants {% endcomment %}
+        <div class="cp-size-variants-div" id="cp-size-variants-div">
+            <p class="cp-variant-name">Size</p>
+            <div class="cp-size-dropdown" id="cp-size-dropdown">
+                <button class="cp-size-selected" id="cp-size-selected">
+                    <span class="cp-size-label" id="cp-size-label">Choose your size</span>
+                    <svg class="cp-size-chevron" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M4 6L9 11L14 6" stroke="black" stroke-width="1.5" stroke-linecap="square"/>
+                    </svg>
+                </button>
+                <div class="cp-size-options" id="cp-size-options"></div>
+            </div>
+
+        </div>
+
+        {% comment %} ADD-TO-CART-BUTTON {% endcomment %}
+         <div class="cp-cart-btn"><p class="cp-cart-error" id="cp-cart-error">Please select all variants</p>
+         <div class="cp-add-to-cart" id="cp-add-to-cart">
+            ADD TO CART
+            <svg width="26" height="12" viewBox="0 0 26 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.75 4.77298L7.37629e-08 4.77298L-7.37629e-08 6.27298L0.75 6.27298L0.75 4.77298ZM25.2803 6.05331C25.5732 5.76042 25.5732 5.28554 25.2803 4.99265L20.5074 0.21968C20.2145 -0.073213 19.7396 -0.0732131 19.4467 0.21968C19.1538 0.512574 19.1538 0.987447 19.4467 1.28034L23.6893 5.52298L19.4467 9.76562C19.1538 10.0585 19.1538 10.5334 19.4467 10.8263C19.7396 11.1192 20.2145 11.1192 20.5074 10.8263L25.2803 6.05331ZM0.75 6.27298L24.75 6.27298L24.75 4.77298L0.75 4.77298L0.75 6.27298Z" fill="currentColor"/>
+            </svg>
+         </div>
+         </div>
+
+
+    </div>
+ </div>
+
+
+{% style %}
+    .cp-section {
+        max-width:1400px;
+        margin:0 auto;
+        padding: 0 20px;
+        margin-top: 6rem;
+        margin-bottom:4rem;
+    }
+    .cp-heading{
+        font-size:36px;
+        font-family: "Lustria", serif;
+        font-weight: 400;
+    }
+    .cp-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .cp-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        aspect-ratio: 1/1;
+    }
+    .cp-image-div{
+        position:relative;
+    }
+    .cp-plus-svg{
+        position:absolute;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+        .cp-heading{
+            font-size:24px;
+            text-align:center;
+        }
+        .cp-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        .cp-plus-svg svg{
+            width:20px;
+        }
+    }
+
+
+    /* POPUP-CSS */
+.cp-popup-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    align-items: center;
+    justify-content: center;
+}
+.cp-popup-overlay.active {
+    display: flex;
+}
+.cp-popup {
+    background: #fff;
+    padding: 30px 15px;;
+    max-width: 400px;
+    position: relative;
+    
+}
+.cp-popup-close {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+.cp-popup-close svg{
+    width:40px;
+    height:40px;
+}
+.cp-popup-div1{
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.cp-popup-img {
+    width: 140px;
+    height: 160px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+.cp-popup-info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.cp-popup-title {
+    font-family: "Jost", sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    margin: 0;
+    color:black;
+}
+.cp-popup-price {
+    font-family: "Lustria", serif;
+    font-size: 20px;
+    font-weight:400;
+    margin: 0;
+    color:black;
+}
+.cp-popup-desc {
+    font-family: "Jost", sans-serif;
+    font-size: 16px;
+    font-weight:300;
+    margin: 0;
+    line-height: 1.2;
+    color:black;
+}
+
+/* Color-variant-css */
+.cp-color-variants-div {
+    display: flex;
+    flex-wrap: wrap;
+    width:100%;
+}
+.cp-color-variant-btn {
+    display: flex;
+    align-items: center;
+    border: 1px solid #5f5f5f;
+    background: #fff;
+    cursor: pointer;
+    padding: 0;
+    font-family: "Jost", sans-serif;
+    font-size: 20px;
+    font-weight: 300;
+    overflow: hidden;
+    min-width: 50%;
+    color:black;
+}
+.cp-color-box {
+    width: 10px;
+    min-height: 100%;
+    flex-shrink: 0;
+    border-right: 1px solid #5f5f5f;
+}
+.cp-variant-name {
+    font-family: "Jost", sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    margin: 10px 0 0 0;
+    width: 100%;
+    color: #333333;
+}
+.cp-color-label {
+    padding: 8px 12px;
+    white-space: nowrap;
+}
+.cp-color-variant-btn.selected {
+    background: #000;
+    color: #fff;
+    border-color: #000;
+}
+.cp-color-variant-btn.selected .cp-color-box {
+    border-right-color: #333;
+}
+
+/* Size-variant-css */
+.cp-size-dropdown {
+    position:relative;
+    border: 1px solid #5f5f5f;
+    font-family: "Jost", sans-serif;
+    font-weight: 300;
+}
+.cp-size-selected {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 10px 14px;
+    background: #fff;
+    border: none;
+    cursor: pointer;
+    font-family: "Jost", sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    box-sizing: border-box;
+    color: #333333;
+}
+.cp-size-selected svg {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+.cp-size-dropdown.open .cp-size-selected svg {
+    transform: rotate(180deg);
+}
+.cp-size-options {
+    position: absolute;
+    top: 100%;        
+    bottom: auto;     
+    left: -1px;
+    right: -1px;
+    max-height: 0;
+    overflow-y: auto;
+    scrollbar-width: none;
+    transition: max-height 0.3s ease;
+    background: #fff;
+    border: 0px solid #5f5f5f;
+    box-sizing: border-box;
+    z-index: 10;
+}
+.cp-size-dropdown.open .cp-size-options {
+    max-height: 120px;
+    border: 1px solid #5f5f5f;
+}
+.cp-size-option {
+    padding: 10px 14px;
+    font-family: "Jost", sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    cursor: pointer;
+    border: none;
+    background: #fff;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
+    width:100%;
+    
+}
+.cp-size-option:hover {
+    background: #000;
+    color: #fff;
+}
+.cp-size-label {
+    flex: 1;
+    text-align: left;
+    color:black;
+}
+.cp-size-label.selected {
+    text-align: center;
+}
+
+
+/* Add-to-cart-button-css */
+.cp-add-to-cart{
+    width:100%;
+    margin-top:1rem;
+    padding:10px 20px;
+    background:#000;
+    color:white;
+    cursor:pointer;
+    font-family: "Jost", sans-serif;
+    font-size:18px;
+    font-weight:400;
+    gap:20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cp-cart-error{
+    visibility: hidden;
+    color:red;
+    margin: 0;
+}
+.cp-cart-error.visible{
+    visibility: visible;
+    
+}
+.cp-cart-btn{
+margin-top:1rem;
+}
+
+
+@media (max-width: 768px) {
+    .cp-popup {
+        padding: 30px 20px;
+        width: 90%;
+    }
+    .cp-popup-img {
+        width: 120px;
+        height: 150px;
+    }
+
+    .cp-popup-title {
+        font-size: 18px;
+    }
+    .cp-popup-price {
+        font-size: 18px;
+    }
+    .cp-popup-desc {
+        font-size: 13px;
+    }
+    .cp-variant-name,
+    .cp-color-variant-btn,
+    .cp-size-selected,
+    .cp-add-to-cart{
+        font-size: 18px;
+    }
+    .cp-size-dropdown.open .cp-size-options {
+        max-height: 115px;
+    }
+}
+
+
+{% endstyle %}
+
+<script>
+
+    const colorMap ={
+        'white': '#fff',
+        'black': '#000',
+        'blue': '#0D499F',
+        'red': '#B20F36',
+        'grey': '#AFAFB7'
+    };
+
+    let currentHandle = '';
+
+    const overlay = document.getElementById('cp-popup-overlay');
+    const closeBtn = document.getElementById('cp-popup-close');
+
+    document.querySelectorAll('.cp-plus-svg').forEach(btn => {
+        btn.addEventListener('click', () =>{
+            document.getElementById('cp-popup-img').src = btn.dataset.img;
+            document.getElementById('cp-popup-title').textContent = btn.dataset.title;
+            document.getElementById('cp-popup-price').textContent = btn.dataset.price;
+            document.getElementById('cp-popup-desc').textContent = btn.dataset.desc;
+
+            currentHandle = btn.dataset.handle;
+            errorMsg.classList.remove('visible');
+
+            // Color-variant-js
+            const colorDiv = document.getElementById('cp-color-variants-div');
+            colorDiv.querySelectorAll('.cp-color-variant-btn').forEach(b => b.remove());
+
+            (btn.dataset.variantColors || '').split('|').filter(Boolean).forEach((color, i) => {
+                const b = document.createElement('button');
+                b.className = 'cp-color-variant-btn';
+                b.innerHTML = `<span class="cp-color-box" style="background:${colorMap[color.toLowerCase()] || '#5f5f5f'};"></span><span class="cp-color-label">${color}</span>`;
+                b.onclick = () => {
+                    colorDiv.querySelectorAll('.cp-color-variant-btn').forEach(x => x.classList.remove('selected'));
+                    b.classList.add('selected');
+                };
+                colorDiv.appendChild(b);
+            });
+
+            // Size-dropdown
+            const sizeOptions = document.getElementById('cp-size-options');
+            const sizeLabel = document.getElementById('cp-size-label');
+            const sizeDropdown = document.getElementById('cp-size-dropdown');
+
+            sizeLabel.textContent = 'Choose your size';
+            sizeLabel.classList.remove('selected');
+            sizeDropdown.classList.remove('open');
+            sizeOptions.innerHTML = '';
+
+            (btn.dataset.variantSizes || '').split('|').filter(Boolean).forEach(size => {
+                const opt = document.createElement('button');
+                opt.className = 'cp-size-option';
+                opt.textContent = size;
+                opt.onclick = () => {
+                    sizeLabel.textContent = size;
+                    sizeLabel.classList.add('selected');
+                    sizeDropdown.classList.remove('open');
+                };
+                sizeOptions.appendChild(opt);
+            });
+
+            document.getElementById('cp-size-selected').onclick = () => sizeDropdown.classList.toggle('open');
+
+            document.getElementById('cp-size-variants-div').style.display =
+                btn.dataset.variantSizes ? 'block' : 'none';
+
+
+            overlay.classList.add('active');
+        });
+    });
+
+    closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
+    overlay.addEventListener('click', (e) =>{
+        if (e.target === overlay) overlay.classList.remove('active');
+    });                          
+
+    const errorMsg = document.getElementById('cp-cart-error');
+    document.getElementById('cp-add-to-cart').addEventListener('click', function(){
+        const colorDiv = document.getElementById('cp-color-variants-div');
+        const selectedColor = colorDiv.querySelector('.cp-color-variant-btn.selected');
+        const selectedSize = document.getElementById('cp-size-label').textContent;
+        const hasColors = colorDiv.querySelectorAll('.cp-color-variant-btn').length > 0;
+        const hasSizes = document.getElementById('cp-size-variants-div').style.display !== 'none';
+
+        if ((hasColors && !selectedColor) || (hasSizes && selectedSize === 'Choose your size')) {
+            errorMsg.classList.add('visible');
+            return;    
+        }
+        errorMsg.classList.remove('visible');
+
+        fetch('/products/' + currentHandle + '.js')
+        .then(function(r) { return r.json(); })
+        .then(function(product) {
+            var variant = product.variants.find(function(v) {
+                return (!hasColors || v.options.indexOf(selectedColor.querySelector('.cp-color-label').textContent) > -1) &&
+                       (!hasSizes || v.options.indexOf(selectedSize) > -1);
+            });
+            if (!variant) return;
+
+            const isBlack = selectedColor && selectedColor.querySelector('.cp-color-label').textContent.trim() === 'Black';
+            const isMedium = selectedSize.trim() === 'M';
+
+            const adds = [{ id: variant.id, quantity: 1 }];
+            if (isBlack && isMedium) adds.push({ id: 51432728396074, quantity: 1 });
+
+            fetch('/cart/add.js', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: adds})
+            }).then(function() {
+                window.location.href = '/cart';
+            });
+        });
+    });
+
+</script>
+
+{% schema %}
+{
+    "name": "Custom Product Grid",
+    "settings": [
+       { 
+            "type": "text",
+            "id": "heading",
+            "label": "Section Heading"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "product",
+            "name": "Product",
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Select Product"
+                },
+                {
+                    "type": "range",
+                    "id": "plus_top",
+                    "label": "Vertical Position Of Plus",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 50
+                },
+                {
+                    "type": "range",
+                    "id": "plus_left",
+                    "label": "Horizontal Position Of Plus",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "%",
+                    "default": 50
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Custom Product Grid"
+        }
+    ]
+}
+{% endschema %}

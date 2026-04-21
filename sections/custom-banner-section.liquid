@@ -21,7 +21,7 @@
                 {% if block.settings.logo != blank %}
                     <img
                         class="bs1-logo_img"
-                        src="{{ block.settings.logo | image_url: width:400 }}"
+                        src="{{ block.settings.logo | image_url: width:800 }}"
                         width="auto"
                         height="auto"
                     >
@@ -169,29 +169,23 @@
 .bs3-text-desktop,
 .bs3-text-mobile {
     text-align: center;
-    font-family: Jost;
-    font-size: 18px;
+    font-family: "Jost", sans-serif;
+    font-size: 16px;
     font-weight: 400;
-    padding: 0 20px;
+    padding: 10px 20px;
     background: #f7f7f7;
-    letter-spacing: 0.05em;
     text-transform: uppercase;
+    color:black;
 }
 .bs3-text-desktop p,
 .bs3-text-mobile p{
      margin:0;
-     padding: 10px 0;
 }
 
 .bs3-text-mobile {
     display: none;
 }
 
-@media (min-width: 769px) and (max-width: 1024px) { 
-    .bs3-text-desktop {
-        font-size: 17px;
-    }
-}
 @media (max-width: 768px) {
     .bs3-text-desktop {
         display: none;
@@ -210,19 +204,24 @@
     background-size:cover;
     background-position:center center;
     background-repeat: no-repeat;
-    height:700px;
+    height:780px;
+    max-width:1600px;
+    margin: 0 auto;
 }
 .bs2-content-heading{
-    font-family: Jost;
-    font-weight:600;
-    font-size:60px;
-    margin-bottom:0;
+    font-family: "Jost", sans-serif;
+    font-weight:500;
+    font-size:70px;
+    margin-bottom:1rem;
 }
 .bs2-content-richtext{
-    font-family: Jost;
+    font-family: "Jost", sans-serif;
     font-weight:400;
-    font-size:22px;
-    max-width:550px;
+    font-size:20px;
+    max-width:500px;
+    line-height:1.6;
+    color: black;
+    margin-bottom:2rem;
 }
 
 .bs2-content{
@@ -232,20 +231,21 @@
     flex-direction:column;
     height:100%;
     justify-content: end;
-    padding-left:15px;
+    padding-left:35px;
 }
 .bs2-btn-div{
-    margin-bottom:20px;
+    margin-bottom:4rem;
 }
 .bs2-btn {
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    font-size: 20px;
+    gap: 20px;
+    font-family: "Jost", sans-serif;
+    font-size: 16px;
+    font-weight:400;
     text-decoration: none;
     text-transform: uppercase;
-    border: 1px solid black;
     padding: 10px 40px;
     color: white;
     background: black;
@@ -279,20 +279,24 @@
     display:none;
 }
 
-@media (min-width: 769px) and (max-width: 1024px) { 
+@media (min-width: 989px) and (max-width: 1280px) { 
+    .bs2-bg{
+        height:620px;
+    }
     .bs2-content-heading{
-        font-size:40px;
+        font-size:50px;
+        margin-bottom:0;
     }
     .bs2-content-richtext{
-        font-size:15px;
-        max-width:300px;
+        max-width:420px;
+        margin-bottom:0;
     }
-    .bs2-btn{
-        font-size:18px;
+    .bs2-btn-div{
+        margin-bottom:1rem;
     }
 }
 
-@media (max-width: 768px){
+@media (max-width: 989px){
     .bs2-mobile-img-div{
         position:relative;
         display:block;
@@ -316,15 +320,20 @@
     .bs2-content{
         height:auto;
         text-align: center;
+        padding-left: 0;
     }
     .bs2-content-heading{
-        font-size:38px;
+        font-size:30px;
         margin-top:7rem;
+        margin-bottom:0;
     }
     .bs2-content-richtext-m{
-        font-size:18px;
+        font-size:16px;
         max-width:85%;
         margin:0 auto;
+        font-weight:400;
+        color:black;
+        font-family: "Jost", sans-serif;
     }
     .bs2-btn-div-m{
         position: absolute;
@@ -334,8 +343,9 @@
         width: max-content;
     }
     .bs2-btn{
-        font-size:18px;
-        padding: 8px 20px;
+        font-size:16px;
+        padding: 8px 34px;
+        gap:20px;
     }
 }
 
@@ -357,15 +367,17 @@
     align-items: center;
     justify-content: space-between;
 }
-
+.bs1-logo{
+    line-height:0;
+}
 .bs1-logo_img {
     width: auto;
-    height: 25px;
+    height: 19px;
 }
 
 .bs1-middle-text {
-    font-family: jost;
-    font-size: 20px;
+    font-family: "Jost", sans-serif;
+    font-size: 16px;
     font-weight: 400;
 }
 
@@ -373,11 +385,11 @@
     position: relative;
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    font-size: 20px;
+    gap: 20px;
+    font-family: "Jost", sans-serif;
+    font-size: 16px;
     text-decoration: none;
     text-transform: uppercase;
-    border: 1px solid black;
     padding: 5px 20px;
     color: black;
     background: #fff544;
@@ -421,23 +433,15 @@
     align-items: center;
     gap: 16px;
     padding: 0 20px;
-    background: #fff;
+    background: #f7f7f7;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease, padding 0.4s ease;
 }
 
-@media (min-width: 769px) and (max-width: 1024px) { 
-    .bs1-middle-text {
-        font-size:17px;
-    }
-    .bs1-btn{
-        font-size:18px;
-    }
-}
 
 /*  MOBILE css  */
-@media (max-width: 768px) {
+@media (max-width: 989px) {
 
     
     .bs1-middle-text,
@@ -449,6 +453,7 @@
     .bs1-inner {
         justify-content: center;
         position: relative;
+        box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 4px 0px;
     }
 
     
@@ -481,9 +486,14 @@
     }
 
     .bs1-mobile-middle-text {
-        font-family: jost;
-        font-size: 18px;
+        font-family: "Jost", sans-serif;
+        font-size: 16px;
         font-weight: 400;
+        color:black;
+    }
+    .bs1-btn{
+        gap:20px;
+        padding:8px 34px;
     }
 }
 
