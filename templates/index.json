@@ -113,10 +113,55 @@
       "settings": {
         "heading": "Tisso vison in the wild"
       }
+    },
+    "custom_banner_section_BeLcfy": {
+      "type": "custom-banner-section",
+      "blocks": {
+        "bs1_header_Lne9b8": {
+          "type": "bs1_header",
+          "settings": {
+            "logo": "shopify://shop_images/Group_1000007777.png",
+            "middle_text": "Find the ideal gift for your loved ones.",
+            "button_text": "choose gift",
+            "button_link": "#"
+          }
+        },
+        "bs2_banner_WhK4tn": {
+          "type": "bs2_banner",
+          "settings": {
+            "bg_image": "shopify://shop_images/banner-bg.webp",
+            "mobile_image": "shopify://shop_images/banner-mobile.svg",
+            "heading": "The Gift Guide",
+            "rich_text": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>",
+            "rich_text_m": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p>",
+            "button_text": "shop now",
+            "button_link": "#"
+          }
+        },
+        "bs3_text_4QcJBJ": {
+          "type": "bs3_text",
+          "settings": {
+            "bottom_text": "<p>SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL</p>",
+            "bottom_text_m": "<p>SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR</p>"
+          }
+        }
+      },
+      "block_order": [
+        "bs1_header_Lne9b8",
+        "bs2_banner_WhK4tn",
+        "bs3_text_4QcJBJ"
+      ],
+      "name": "Custom Banner Section",
+      "settings": {}
     }
   },
   "order": [
+<<<<<<< HEAD
     "custom_banner_section_HmVFLH",
     "custom_product_grid_zHaegi"
+=======
+    "image_banner",
+    "custom_banner_section_BeLcfy"
+>>>>>>> beecf2532879bf3faa0d679a5aeb2c0f3e2cf6bc
   ]
 }
