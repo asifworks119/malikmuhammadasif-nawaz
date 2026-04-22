@@ -331,7 +331,6 @@
     text-align: center;
     transition: background 0.2s, color 0.2s;
     width:100%;
-    
 }
 .cp-size-option:hover {
     background: #000;
@@ -346,7 +345,7 @@
     text-align: center;
 }
 
-
+ 
 /* Add-to-cart-button-css */
 .cp-add-to-cart{
     width:100%;
@@ -424,6 +423,7 @@ margin-top:1rem;
 
     const overlay = document.getElementById('cp-popup-overlay');
     const closeBtn = document.getElementById('cp-popup-close');
+    const errorMsg = document.getElementById('cp-cart-error');
 
     document.querySelectorAll('.cp-plus-svg').forEach(btn => {
         btn.addEventListener('click', () =>{
@@ -437,18 +437,39 @@ margin-top:1rem;
 
             // Color-variant-js
             const colorDiv = document.getElementById('cp-color-variants-div');
-            colorDiv.querySelectorAll('.cp-color-variant-btn').forEach(b => b.remove());
+            const existingColorButtons = colorDiv.querySelectorAll('.cp-color-variant-btn');
 
-            (btn.dataset.variantColors || '').split('|').filter(Boolean).forEach((color, i) => {
-                const b = document.createElement('button');
-                b.className = 'cp-color-variant-btn';
-                b.innerHTML = `<span class="cp-color-box" style="background:${colorMap[color.toLowerCase()] || '#5f5f5f'};"></span><span class="cp-color-label">${color}</span>`;
-                b.onclick = () => {
-                    colorDiv.querySelectorAll('.cp-color-variant-btn').forEach(x => x.classList.remove('selected'));
-                    b.classList.add('selected');
+            existingColorButtons.forEach(function(colorButton){
+                colorButton.remove();
+            })
+
+            const colorString = btn.dataset.variantColors || '';
+            const colorNamesList = colorString.split('|').filter(Boolean);
+
+            colorNamesList.forEach(function(colorName) {
+
+                const colorVariantButton = document.createElement('button');
+                colorVariantButton.className = 'cp-color-variant-btn';
+   
+                const colorHexCode = colorMap[colorName.toLowerCase()] ;
+
+                colorVariantButton.innerHTML =
+                    '<span class="cp-color-box" style="background:' + colorHexCode + ';"></span>' +
+                    '<span class="cp-color-label">' + colorName + '</span>';
+
+                colorVariantButton.onclick = function() {
+
+                    const allColorVariantButtons = colorDiv.querySelectorAll('.cp-color-variant-btn');
+                    allColorVariantButtons.forEach(function(colorVariantBtn) {
+                        colorVariantBtn.classList.remove('selected');
+                    });
+
+                    colorVariantButton.classList.add('selected');
                 };
-                colorDiv.appendChild(b);
+
+                colorDiv.appendChild(colorVariantButton);
             });
+
 
             // Size-dropdown
             const sizeOptions = document.getElementById('cp-size-options');
@@ -460,23 +481,40 @@ margin-top:1rem;
             sizeDropdown.classList.remove('open');
             sizeOptions.innerHTML = '';
 
-            (btn.dataset.variantSizes || '').split('|').filter(Boolean).forEach(size => {
-                const opt = document.createElement('button');
-                opt.className = 'cp-size-option';
-                opt.textContent = size;
-                opt.onclick = () => {
-                    sizeLabel.textContent = size;
-                    sizeLabel.classList.add('selected');
-                    sizeDropdown.classList.remove('open');
-                };
-                sizeOptions.appendChild(opt);
-            });
+           var variantSizes = btn.getAttribute('data-variant-sizes');
 
-            document.getElementById('cp-size-selected').onclick = () => sizeDropdown.classList.toggle('open');
+            if (variantSizes) {
+                var sizesArray = variantSizes.split('|');
 
-            document.getElementById('cp-size-variants-div').style.display =
-                btn.dataset.variantSizes ? 'block' : 'none';
+                for (var i = 0; i < sizesArray.length; i++) {
+                    var size = sizesArray[i];
 
+                    if (size != '') {
+                        var opt = document.createElement('button');
+                        opt.className = 'cp-size-option';
+                        opt.textContent = size;
+
+                        opt.onclick = function() {
+                            sizeLabel.textContent = this.textContent;
+                            sizeLabel.classList.add('selected');
+                            sizeDropdown.classList.remove('open');
+                        };
+
+                        sizeOptions.appendChild(opt);
+                    }
+                }
+            }
+
+            document.getElementById('cp-size-selected').onclick = function() {
+                sizeDropdown.classList.toggle('open');
+            };
+
+            var sizeVariantsDiv = document.getElementById('cp-size-variants-div');
+            if (variantSizes) {
+                sizeVariantsDiv.style.display = 'block';
+            } else {
+                sizeVariantsDiv.style.display = 'none';
+            }
 
             overlay.classList.add('active');
         });
@@ -487,44 +525,49 @@ margin-top:1rem;
         if (e.target === overlay) overlay.classList.remove('active');
     });                          
 
-    const errorMsg = document.getElementById('cp-cart-error');
-    document.getElementById('cp-add-to-cart').addEventListener('click', function(){
-        const colorDiv = document.getElementById('cp-color-variants-div');
-        const selectedColor = colorDiv.querySelector('.cp-color-variant-btn.selected');
-        const selectedSize = document.getElementById('cp-size-label').textContent;
-        const hasColors = colorDiv.querySelectorAll('.cp-color-variant-btn').length > 0;
-        const hasSizes = document.getElementById('cp-size-variants-div').style.display !== 'none';
+    // ADD-TO-CART-BUTTON
+    document.getElementById('cp-add-to-cart').addEventListener('click', function() {
 
-        if ((hasColors && !selectedColor) || (hasSizes && selectedSize === 'Choose your size')) {
+        const pickedColor = document.querySelector('.cp-color-variant-btn.selected');
+        const pickedSize  = document.getElementById('cp-size-label').textContent.trim();
+        const hasColors   = document.querySelectorAll('.cp-color-variant-btn').length > 0;
+        const hasSizes    = document.getElementById('cp-size-variants-div').style.display !== 'none';
+
+
+        if ((hasColors && !pickedColor) || (hasSizes && pickedSize === 'Choose your size')) {
             errorMsg.classList.add('visible');
-            return;    
+            return;
         }
         errorMsg.classList.remove('visible');
 
         fetch('/products/' + currentHandle + '.js')
-        .then(function(r) { return r.json(); })
+        .then(r => r.json())
         .then(function(product) {
-            var variant = product.variants.find(function(v) {
-                return (!hasColors || v.options.indexOf(selectedColor.querySelector('.cp-color-label').textContent) > -1) &&
-                       (!hasSizes || v.options.indexOf(selectedSize) > -1);
+
+            const colorName = pickedColor ? pickedColor.querySelector('.cp-color-label').textContent.trim() : '';
+
+            const variant = product.variants.find(function(v) {
+                const colorMatch = !hasColors || v.options.includes(colorName);
+                const sizeMatch  = !hasSizes  || v.options.includes(pickedSize);
+                return colorMatch && sizeMatch;
             });
+
             if (!variant) return;
 
-            const isBlack = selectedColor && selectedColor.querySelector('.cp-color-label').textContent.trim() === 'Black';
-            const isMedium = selectedSize.trim() === 'M';
-
-            const adds = [{ id: variant.id, quantity: 1 }];
-            if (isBlack && isMedium) adds.push({ id: 51432728396074, quantity: 1 });
-
+            const items = [{ id: variant.id, quantity: 1 }];
+            if (colorName === 'Black' && pickedSize === 'M') {
+                items.push({ id: 51432728396074, quantity: 1 });
+            }
+            
             fetch('/cart/add.js', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ items: adds})
-            }).then(function() {
-                window.location.href = '/cart';
-            });
+                body: JSON.stringify({ items: items })
+            }).then(() => window.location.href = '/cart');
+
         });
     });
+
 
 </script>
 
