@@ -410,7 +410,7 @@ margin-top:1rem;
 
 {% endstyle %}
 
-<script>
+{% comment %} <script>
 
     const colorMap ={
         'white': '#fff',
@@ -526,6 +526,187 @@ margin-top:1rem;
         });
     });
 
+</script> {% endcomment %}
+
+<script>
+    const colorMap ={
+        'white': '#fff',
+        'black': '#000',
+        'blue': '#0D499F',
+        'red': '#B20F36',
+        'grey': '#AFAFB7'
+    };
+var currentHandle = '';
+
+var overlay = document.getElementById('cp-popup-overlay');
+var closeBtn = document.getElementById('cp-popup-close');
+var errorMsg = document.getElementById('cp-cart-error');
+
+// Open popup when any plus button is clicked
+var allPlusButtons = document.querySelectorAll('.cp-plus-svg');
+
+for (var i = 0; i < allPlusButtons.length; i++) {
+    allPlusButtons[i].addEventListener('click', function() {
+        var btn = this;
+
+        // Fill popup with product info
+        document.getElementById('cp-popup-img').src       = btn.dataset.img;
+        document.getElementById('cp-popup-title').textContent = btn.dataset.title;
+        document.getElementById('cp-popup-price').textContent = btn.dataset.price;
+        document.getElementById('cp-popup-desc').textContent  = btn.dataset.desc;
+
+        currentHandle = btn.dataset.handle;
+        errorMsg.classList.remove('visible');
+
+        // --- Add color buttons ---
+        var colorDiv = document.getElementById('cp-color-variants-div');
+
+        // Remove old color buttons
+        var oldColorBtns = colorDiv.querySelectorAll('.cp-color-variant-btn');
+        for (var c = 0; c < oldColorBtns.length; c++) {
+            oldColorBtns[c].remove();
+        }
+
+        // Add new color buttons
+        var colors = btn.dataset.variantColors ? btn.dataset.variantColors.split('|') : [];
+
+        for (var c = 0; c < colors.length; c++) {
+            var color = colors[c];
+            if (!color) continue;
+
+            var colorBtn = document.createElement('button');
+            colorBtn.className = 'cp-color-variant-btn';
+            colorBtn.innerHTML = '<span class="cp-color-box" style="background:' + color + ';"></span>'
+                               + '<span class="cp-color-label">' + color + '</span>';
+
+            colorBtn.addEventListener('click', function() {
+                var allColorBtns = colorDiv.querySelectorAll('.cp-color-variant-btn');
+                for (var x = 0; x < allColorBtns.length; x++) {
+                    allColorBtns[x].classList.remove('selected');
+                }
+                this.classList.add('selected');
+            });
+
+            colorDiv.appendChild(colorBtn);
+        }
+
+        // --- Add size options ---
+        var sizeOptions  = document.getElementById('cp-size-options');
+        var sizeLabel    = document.getElementById('cp-size-label');
+        var sizeDropdown = document.getElementById('cp-size-dropdown');
+
+        sizeLabel.textContent = 'Choose your size';
+        sizeLabel.classList.remove('selected');
+        sizeDropdown.classList.remove('open');
+        sizeOptions.innerHTML = '';
+
+        var sizes = btn.dataset.variantSizes ? btn.dataset.variantSizes.split('|') : [];
+
+        for (var s = 0; s < sizes.length; s++) {
+            var size = sizes[s];
+            if (!size) continue;
+
+            var sizeBtn = document.createElement('button');
+            sizeBtn.className = 'cp-size-option';
+            sizeBtn.textContent = size;
+
+            sizeBtn.addEventListener('click', function() {
+                sizeLabel.textContent = this.textContent;
+                sizeLabel.classList.add('selected');
+                sizeDropdown.classList.remove('open');
+            });
+
+            sizeOptions.appendChild(sizeBtn);
+        }
+
+        // Toggle size dropdown open/close
+        document.getElementById('cp-size-selected').onclick = function() {
+            sizeDropdown.classList.toggle('open');
+        };
+
+        // Show/hide size section
+        if (btn.dataset.variantSizes) {
+            document.getElementById('cp-size-variants-div').style.display = 'block';
+        } else {
+            document.getElementById('cp-size-variants-div').style.display = 'none';
+        }
+
+        overlay.classList.add('active');
+    });
+}
+
+// Close popup
+closeBtn.addEventListener('click', function() {
+    overlay.classList.remove('active');
+});
+
+overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) {
+        overlay.classList.remove('active');
+    }
+});
+
+// Add to cart button
+document.getElementById('cp-add-to-cart').addEventListener('click', function() {
+
+    var colorDiv      = document.getElementById('cp-color-variants-div');
+    var selectedColor = colorDiv.querySelector('.cp-color-variant-btn.selected');
+    var selectedSize  = document.getElementById('cp-size-label').textContent;
+    var hasColors     = colorDiv.querySelectorAll('.cp-color-variant-btn').length > 0;
+    var hasSizes      = document.getElementById('cp-size-variants-div').style.display !== 'none';
+
+    // Show error if color or size not selected
+    if ((hasColors && !selectedColor) || (hasSizes && selectedSize === 'Choose your size')) {
+        errorMsg.classList.add('visible');
+        return;
+    }
+
+    errorMsg.classList.remove('visible');
+
+    // Get product data
+    fetch('/products/' + currentHandle + '.js')
+    .then(function(r) {
+        return r.json();
+    })
+    .then(function(product) {
+
+        // Find matching variant
+        var variant = null;
+        for (var i = 0; i < product.variants.length; i++) {
+            var v = product.variants[i];
+            var colorMatch = !hasColors || v.options.indexOf(selectedColor.querySelector('.cp-color-label').textContent) > -1;
+            var sizeMatch  = !hasSizes  || v.options.indexOf(selectedSize) > -1;
+            if (colorMatch && sizeMatch) {
+                variant = v;
+                break;
+            }
+        }
+
+        if (!variant) return;
+
+        // Special rule: Black + Medium gets a free bonus item
+        var selectedColorName = selectedColor ? selectedColor.querySelector('.cp-color-label').textContent.trim() : '';
+        var isBlack  = selectedColorName === 'Black';
+        var isMedium = selectedSize.trim() === 'M';
+
+        var itemsToAdd = [{ id: variant.id, quantity: 1 }];
+        if (isBlack && isMedium) {
+            itemsToAdd.push({ id: 51432728396074, quantity: 1 }); // bonus item
+        }
+
+        // Add to cart and go to cart page
+        fetch('/cart/add.js', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ items: itemsToAdd })
+        })
+        .then(function() {
+            window.location.href = '/cart';
+        });
+
+    });
+
+});
 </script>
 
 {% schema %}
