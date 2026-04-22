@@ -1,5 +1,6 @@
 {
   "sections": {
+
     "custom_banner_section_HmVFLH": {
       "type": "custom-banner-section",
       "blocks": {
@@ -12,18 +13,20 @@
             "button_link": "#"
           }
         },
+
         "bs2_banner_CWDE8V": {
           "type": "bs2_banner",
           "settings": {
             "bg_image": "shopify://shop_images/banner-bg.webp",
             "mobile_image": "shopify://shop_images/banner-mobile.svg",
             "heading": "The Gift Guide",
-            "rich_text": "<p>Discover Joy: Your Ultimate Holiday Gift Destination. Explore our curated selection and find the perfect gifts to delight your loved ones this holiday season.</p>",
+            "rich_text": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p>",
             "rich_text_m": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p>",
             "button_text": "shop now",
             "button_link": "#"
           }
         },
+
         "bs3_text_MUjL67": {
           "type": "bs3_text",
           "settings": {
@@ -40,6 +43,50 @@
       "name": "Custom Banner Section",
       "settings": {}
     },
+
+    "custom_banner_section_BeLcfy": {
+      "type": "custom-banner-section",
+      "blocks": {
+        "bs1_header_Lne9b8": {
+          "type": "bs1_header",
+          "settings": {
+            "logo": "shopify://shop_images/Group_1000007777.png",
+            "middle_text": "Find the ideal gift for your loved ones.",
+            "button_text": "choose gift",
+            "button_link": "#"
+          }
+        },
+
+        "bs2_banner_WhK4tn": {
+          "type": "bs2_banner",
+          "settings": {
+            "bg_image": "shopify://shop_images/banner-bg.webp",
+            "mobile_image": "shopify://shop_images/banner-mobile.svg",
+            "heading": "The Gift Guide",
+            "rich_text": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p>",
+            "rich_text_m": "<p>Discover Joy: Your Ultimate Holiday Gift Destination.</p>",
+            "button_text": "shop now",
+            "button_link": "#"
+          }
+        },
+
+        "bs3_text_4QcJBJ": {
+          "type": "bs3_text",
+          "settings": {
+            "bottom_text": "<p>SUSTAINABLE, ETHICALLY MADE CLOTHES IN SIZES XXS TO 6XL</p>",
+            "bottom_text_m": "<p>SUSTAINABLE, ETHICALLY MADE ACTIVEWEAR</p>"
+          }
+        }
+      },
+      "block_order": [
+        "bs1_header_Lne9b8",
+        "bs2_banner_WhK4tn",
+        "bs3_text_4QcJBJ"
+      ],
+      "name": "Custom Banner Section",
+      "settings": {}
+    },
+
     "custom_product_grid_zHaegi": {
       "type": "custom-product-grid",
       "blocks": {
@@ -58,56 +105,90 @@
             "plus_top": 55,
             "plus_left": 85
           }
-        },
-        "product_wizeni": {
-          "type": "product",
-          "settings": {
-            "product": "chequered-red-shirt",
-            "plus_top": 27,
-            "plus_left": 60
-          }
-        },
-        "product_gAEYMV": {
-          "type": "product",
-          "settings": {
-            "product": "classic-leather-jacket",
-            "plus_top": 24,
-            "plus_left": 71
-          }
-        },
-        "product_m87WCt": {
-          "type": "product",
-          "settings": {
-            "product": "classic-varsity-top",
-            "plus_top": 26,
-            "plus_left": 49
-          }
-        },
-        "product_w68BJ6": {
-          "type": "product",
-          "settings": {
-            "product": "dark-denim-top",
-            "plus_top": 50,
-            "plus_left": 73
-          }
         }
       },
       "block_order": [
         "product_APN3Ft",
-        "product_M3yEBc",
-        "product_wizeni",
-        "product_gAEYMV",
-        "product_m87WCt",
-        "product_w68BJ6"
+        "product_M3yEBc"
       ],
       "name": "Custom Product Grid",
       "settings": {
-        "heading": "Tisso vison in the wild"
+        "heading": "Tisso vision in the wild"
+      }
+    },
+
+    "custom_product_grid_x3YXxd": {
+      "type": "custom-product-grid",
+      "blocks": {
+        "product_kkKMnJ": {
+          "type": "product",
+          "settings": {
+            "product": "black-leather-bag",
+            "plus_top": 62,
+            "plus_left": 62
+          }
+        },
+        "product_tWehJw": {
+          "type": "product",
+          "settings": {
+            "product": "blue-silk-tuxedo",
+            "plus_top": 54,
+            "plus_left": 85
+          }
+        },
+        "product_CbjzkC": {
+          "type": "product",
+          "settings": {
+            "product": "chequered-red-shirt",
+            "plus_top": 34,
+            "plus_left": 60
+          }
+        },
+        "product_cktwhM": {
+          "type": "product",
+          "settings": {
+            "product": "classic-leather-jacket",
+            "plus_top": 29,
+            "plus_left": 71
+          }
+        },
+        "product_wmmaEx": {
+          "type": "product",
+          "settings": {
+            "product": "classic-varsity-top",
+            "plus_top": 29,
+            "plus_left": 50
+          }
+        },
+        "product_Vi4hWF": {
+          "type": "product",
+          "settings": {
+            "product": "dark-denim-top",
+            "plus_top": 48,
+            "plus_left": 74
+          }
+        }
+      },
+      "block_order": [
+        "product_kkKMnJ",
+        "product_tWehJw",
+        "product_CbjzkC",
+        "product_cktwhM",
+        "product_wmmaEx",
+        "product_Vi4hWF"
+      ],
+      "name": "Custom Product Grid",
+      "settings": {
+        "heading": "Tisso vision in the wild"
       }
     }
+
   },
+
   "order": [
     "custom_banner_section_HmVFLH",
-    "custom_product_grid_zHaegi"
+    "custom_product_grid_zHaegi",
+    "custom_banner_section_BeLcfy",
+    "custom_product_grid_x3YXxd"
   ]
 }
